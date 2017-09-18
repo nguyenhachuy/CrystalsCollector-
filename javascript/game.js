@@ -5,6 +5,8 @@ var losses = 0;
 
 function updateScore() {
 	$(".total-score").text(totalScore);
+	$(".win").text(wins);
+	$(".loss").text(losses);
 }
 
 function setupGame() {
@@ -48,6 +50,7 @@ function updateGameUI() {
 			updateScore();
 			setupGame();
 			setupGem();
+			alert("You lost!");
 			break;
 		case 0:
 			updateScore();
@@ -58,6 +61,7 @@ function updateGameUI() {
 			updateScore();
 			setupGame();
 			setupGem();
+			alert("You win!");
 			break;
 	}
 }
