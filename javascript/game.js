@@ -1,9 +1,10 @@
 var power = [];
-var score = 0;
+var totalScore = 0;
+var wins = 0;
+var losses = 0;
 
-
-function updateScore(value) {
-	$(".total-score").text(value);
+function updateScore() {
+	$(".total-score").text(totalScore);
 }
 
 function setupGame() {
@@ -11,6 +12,8 @@ function setupGame() {
 }
 
 function setupGem() {
+
+	power = [];
 	// Populate power with randoms 
 	for(var i = 0; i < 4; i++){
 		power.push(getRandomInt(1,12));
@@ -27,14 +30,36 @@ function getRandomInt(min, max) {
 }
 
 function checkGameCondition() {
-	var score = parseInt($(".total-score").text());
 	var goal = parseInt($(".score").text());
 	//Check losing condition 
-	if(score > goal) return -1;
+	if(totalScore > goal) return -1;
 	//Check winning condition
-	else if(score === goal) return 1;
+	else if(totalScore === goal) return 1;
 	//Indicates game is still going on
 	else return 0;
+}
+
+function updateGameUI() {
+	var condition = checkGameCondition();
+	switch(condition) {
+		case -1:
+			losses++;
+			totalScore = 0;
+			updateScore();
+			setupGame();
+			setupGem();
+			break;
+		case 0:
+			updateScore();
+			break;
+		case 1:
+			wins++;
+			totalScore = 0;
+			updateScore();
+			setupGame();
+			setupGem();
+			break;
+	}
 }
 
 $(document).ready(function() {
@@ -44,9 +69,8 @@ $(document).ready(function() {
 	$(`.gem`).on("click", function() {
 		//This is how to get the value fo the crystal
 		var value = $(this).data("value");
-		score += value;
-		updateScore(score);
-		console.log(checkGameCondition());		
+		totalScore += value;
+		updateGameUI();
 	});
 
 
